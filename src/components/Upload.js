@@ -11,12 +11,14 @@ import TableCell from "@material-ui/core/TableCell";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default class UploadComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: null
+            response: null,
+            loading:false
         }
     }
 
@@ -40,7 +42,7 @@ export default class UploadComponent extends React.Component {
         }
         const data = new FormData();
         data.append('file', this.state.selectedFile);
-        this.setState({loading: true, response: null})
+        this.setState({loading: true})
         axios.post(param.URL + 'upload', data, {headers: authHeader()}).then(res => {
             if (res.status === 200) {
                 window.alert(res.data.msg)
@@ -52,6 +54,16 @@ export default class UploadComponent extends React.Component {
     }
 
     render() {
+
+        const showLoading = ()=>{
+            if (this.state.loading){
+                return(
+                    <CircularProgress />
+                )
+            }
+
+        }
+
 
         const showResult = () => {
             if (this.state.response) {
@@ -100,7 +112,10 @@ export default class UploadComponent extends React.Component {
                                         disabled={(this.state.response['quota_used'] === this.state.response['quota_purchased'])}>
                                     Upload
                                 </Button>
-                                {/*disabled={(this.state.suggestion['quota_used'] === this.state.suggestion['quota_purchased'])}*/}
+
+                            </Grid>
+                            <Grid item xs={6}>
+                                {showLoading()}
                             </Grid>
 
                         </Grid>
