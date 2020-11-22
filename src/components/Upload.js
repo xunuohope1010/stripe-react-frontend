@@ -23,6 +23,7 @@ export default class UploadComponent extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({loading:false})
         axios.get(param.URL + 'query', {headers: authHeader()}).then(res => {
             this.setState({response: res.data})
         })
